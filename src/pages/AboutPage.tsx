@@ -17,7 +17,7 @@ export default function AboutPage() {
       {/* Header */}
       <div className="neo-card p-6 sm:p-8 text-center mb-6">
         <div className="w-16 h-16 bg-primary border-3 border-black shadow-[4px_4px_0px_#000] flex items-center justify-center mx-auto mb-4">
-          <span className="font-mono font-bold text-white text-2xl">E</span>
+          <img src="https://pchs5.krakencloud.net/uploads/27-05-2026/upMEFpcd6i/image.png" alt="EpanDStream" />
         </div>
         <h1 className="text-3xl font-bold mb-1">
           Epan<span className="text-primary">D</span>Stream
@@ -90,10 +90,10 @@ export default function AboutPage() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {[
-            { icon: Mail, label: 'Email', value: 'epandlabs@email.com', href: 'mailto:epandlabs@email.com', color: 'bg-primary' },
-            { icon: Phone, label: 'Channel WhatsApp', value: 'EpanDStream Channel', href: 'https://whatsapp.com/channel/epandstream', color: 'bg-success' },
-            { icon: MessageCircle, label: 'Group Chat WhatsApp', value: 'EpanDStream Community', href: 'https://chat.whatsapp.com/epandstream', color: 'bg-success' },
-            { icon: Globe, label: 'Website', value: 'epandstream.my.id', href: 'https://epandstream.my.id', color: 'bg-purple' },
+            { icon: Mail, label: 'Email', value: 'deandri.epan21@smp.belajar.id', href: 'mailto:deandri.epan21@smp.belajar.id', color: 'bg-primary' },
+            { icon: Phone, label: 'Channel WhatsApp', value: 'EpannXD Channel', href: 'https://whatsapp.com/channel/0029VbBwmFJKQuJK7xC9ga25', color: 'bg-success' },
+            { icon: MessageCircle, label: 'Channel WhatsApp', value: './LiaaXD Channel', href: 'https://whatsapp.com/channel/0029Vb8EBxbChq6DHotp8I00', color: 'bg-success' },
+            { icon: Globe, label: 'Website', value: 'www.epandstream.biz.id', href: 'https://www.epandstream.biz.id', color: 'bg-purple' },
           ].map(item => (
             <a
               key={item.label}
