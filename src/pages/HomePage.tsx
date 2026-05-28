@@ -439,7 +439,7 @@ export default function HomePage() {
               { icon: Code, label: 'Developer', value: 'EpanD', color: 'text-primary' },
               { icon: Layers, label: 'Tech Stack', value: 'React + Vite + TailwindCSS', color: 'text-secondary' },
               { icon: Zap, label: 'Version', value: 'v2.3.6', color: 'text-accent' },
-              { icon: Globe, label: 'Website', value: 'epandstream.my.id', color: 'text-purple' },
+              { icon: Globe, label: 'Website', value: 'www.epandstream.biz.id', color: 'text-purple' },
             ].map(info => (
               <div key={info.label} className="bg-darker border-2 border-black p-3 shadow-[3px_3px_0px_#000]">
                 <info.icon size={18} className={info.color} />
@@ -463,7 +463,9 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-3 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-primary border-2 border-black flex items-center justify-center font-mono font-bold text-white text-xs shadow-[2px_2px_0px_#000]">E</div>
+              <div className="w-6 h-6 bg-primary border-2 border-black flex items-center justify-center font-mono font-bold text-white text-xs shadow-[2px_2px_0px_#000]">
+                <img src="https://pchs5.krakencloud.net/uploads/27-05-2026/upMEFpcd6i/image.png" alt="EpanDStream" />
+              </div>
               <span className="font-bold text-sm">EpanDStream</span>
             </div>
             <div className="flex items-center gap-3">
