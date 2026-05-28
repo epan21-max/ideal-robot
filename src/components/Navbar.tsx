@@ -50,7 +50,7 @@ export default function Navbar() {
         <div className="max-w-6xl mx-auto px-3 h-14 flex items-center justify-between">
           <button onClick={() => navigate('/')} className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary border-2 border-black flex items-center justify-center font-mono font-bold text-white text-sm shadow-[2px_2px_0px_#000]">
-              E
+              <img src="https://pchs5.krakencloud.net/uploads/27-05-2026/upMEFpcd6i/image.png" alt="EpanDStream" />
             </div>
             <span className="font-bold text-lg tracking-tight hidden sm:block">
               Epan<span className="text-primary">D</span>Stream
