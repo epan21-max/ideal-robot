@@ -27,6 +27,8 @@ type Ctx = {
   setDesignStyle: (s: DesignStyle) => void;
   neonColor: string;
   setNeonColor: (c: string) => void;
+  animationsEnabled: boolean;
+  setAnimationsEnabled: (v: boolean) => void;
   favorites: AnimeItem[];
   toggleFavorite: (a: AnimeItem) => void;
   isFavorite: (slug: string) => boolean;
@@ -47,6 +49,7 @@ const LS = {
   colorTheme: 'eds.colorTheme',
   designStyle: 'eds.designStyle',
   neonColor: 'eds.neonColor',
+  animations: 'eds.animations',
   fav: 'eds.favorites',
   inbox: 'eds.inbox',
 };
@@ -104,6 +107,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [colorTheme, setColorThemeState] = useState<ColorTheme>(() => read(LS.colorTheme, 'midnight' as ColorTheme));
   const [designStyle, setDesignStyleState] = useState<DesignStyle>(() => read(LS.designStyle, 'liquid' as DesignStyle));
   const [neonColor, setNeonColorState] = useState<string>(() => read(LS.neonColor, '#00f0ff'));
+  const [animationsEnabled, setAnimationsEnabledState] = useState<boolean>(() => read(LS.animations, true));
   const [favorites, setFavorites] = useState<AnimeItem[]>(() => read(LS.fav, [] as AnimeItem[]));
   const [inbox, setInbox] = useState<InboxMessage[]>(() => read(LS.inbox, defaultInbox));
 
@@ -153,11 +157,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (rgb) document.documentElement.style.setProperty('--neon-glow', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.55)`);
   }, [neonColor]);
 
+  useEffect(() => {
+    document.body.setAttribute('data-animations', animationsEnabled ? 'on' : 'off');
+  }, [animationsEnabled]);
+
   const setTheme = (t: Theme) => { setThemeState(t); write(LS.theme, t); };
   const setFont = (f: FontTheme) => { setFontState(f); write(LS.font, f); };
   const setColorTheme = (c: ColorTheme) => { setColorThemeState(c); write(LS.colorTheme, c); };
   const setDesignStyle = (s: DesignStyle) => { setDesignStyleState(s); write(LS.designStyle, s); };
   const setNeonColor = (c: string) => { setNeonColorState(c); write(LS.neonColor, c); };
+  const setAnimationsEnabled = (v: boolean) => { setAnimationsEnabledState(v); write(LS.animations, v); };
 
   const toggleFavorite = useCallback((a: AnimeItem) => {
     setFavorites(prev => {
@@ -213,6 +222,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       colorTheme, setColorTheme,
       designStyle, setDesignStyle,
       neonColor, setNeonColor,
+      animationsEnabled, setAnimationsEnabled,
       favorites, toggleFavorite, isFavorite, clearFavorites,
       inbox, markRead, markAllRead, deleteMessage, unreadCount, pushInbox
     }}>

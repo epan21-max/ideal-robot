@@ -6,7 +6,7 @@ export function FlyingFavorite() {
   const { favorites } = useApp();
   const { navigate, route } = useRouter();
 
-  if (route.name === 'favorites') return null;
+  if (route.name === 'favorites' || route.name === 'home') return null;
 
   return (
     <div className="fixed bottom-20 right-4 z-50 animate-scale-in pointer-events-auto">

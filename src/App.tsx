@@ -4,9 +4,11 @@ import { DynamicIsland } from './components/DynamicIsland';
 import { BottomNav } from './components/BottomNav';
 import { DonghuaNav } from './components/DonghuaNav';
 import { HomePage } from './pages/HomePage';
+import { AnimeHomePage } from './pages/AnimeHomePage';
 import { SearchPage } from './pages/SearchPage';
 import { LibraryPage } from './pages/LibraryPage';
 import { FavoritesPage } from './pages/FavoritesPage';
+import { DonatePage } from './pages/DonatePage';
 import { SchedulePage } from './pages/SchedulePage';
 import { GenrePage } from './pages/GenrePage';
 import { DetailPage } from './pages/DetailPage';
@@ -24,7 +26,7 @@ import { FlyingFavorite } from './components/FlyingFavorite';
 import { useEffect, useState } from 'react';
 
 const donghuaRouteNames = ['donghua','donghua-search','donghua-library','donghua-schedule','donghua-genre','donghua-detail','donghua-episode','donghua-genre-detail'];
-const noNavRoutes = ['detail','episode','donghua-detail','donghua-episode'];
+const noNavRoutes = ['home','detail','episode','donghua-detail','donghua-episode'];
 
 function Routes() {
   const { route } = useRouter();
@@ -37,9 +39,11 @@ function Routes() {
   let page: React.ReactNode = null;
   switch (route.name) {
     case 'home': page = <HomePage />; break;
+    case 'anime': page = <AnimeHomePage />; break;
     case 'search': page = <SearchPage />; break;
     case 'library': page = <LibraryPage />; break;
     case 'favorites': page = <FavoritesPage />; break;
+    case 'donate': page = <DonatePage />; break;
     case 'schedule': page = <SchedulePage />; break;
     case 'genre': page = <GenrePage />; break;
     case 'genre-detail': page = <GenreDetailPage slug={route.slug} genreName={route.genreName} />; break;

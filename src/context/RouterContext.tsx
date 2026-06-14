@@ -2,9 +2,11 @@ import { createContext, useContext, useState, ReactNode, useCallback, useEffect 
 
 export type Route =
   | { name: 'home' }
+  | { name: 'anime' }
   | { name: 'search' }
   | { name: 'library'; tab?: 'ongoing' | 'complete' }
   | { name: 'favorites' }
+  | { name: 'donate' }
   | { name: 'schedule' }
   | { name: 'genre' }
   | { name: 'detail'; slug: string }

@@ -104,3 +104,6 @@ export const LayersIcon = (p: IconProps) => (
 export const DownloadIcon = (p: IconProps) => (
   <svg {...base(p)}><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
 );
+export const ShareIcon = (p: IconProps) => (
+  <svg {...base(p)}><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>
+);

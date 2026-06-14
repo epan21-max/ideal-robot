@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { donghuaApi } from '../lib/donghua';
 import { useRouter } from '../context/RouterContext';
-import { ChevronLeftIcon, ChevronRightIcon, PlayIcon, ChevronDownIcon, TvIcon, DownloadIcon } from '../components/Icon';
+import { ChevronLeftIcon, ChevronRightIcon, PlayIcon, ChevronDownIcon, TvIcon, DownloadIcon, ShareIcon, CheckIcon } from '../components/Icon';
 
 export function DonghuaEpisodePage({ slug }: { slug: string }) {
   const { back, navigate } = useRouter();
@@ -11,6 +11,7 @@ export function DonghuaEpisodePage({ slug }: { slug: string }) {
   const [activeServer, setActiveServer] = useState('');
   const [openServers, setOpenServers] = useState(true);
   const [openDownloads, setOpenDownloads] = useState(false);
+  const [shared, setShared] = useState(false);
 
   useEffect(() => {
     let m = true;
@@ -88,9 +89,27 @@ export function DonghuaEpisodePage({ slug }: { slug: string }) {
 
       <div className="px-4 mt-4 animate-fade-in-up">
         <h1 className="text-xl font-extrabold tracking-tight leading-snug">{title}</h1>
-        {animeSlug && (
-          <button onClick={() => navigate({ name: 'donghua-detail', slug: animeSlug })} className="text-sm text-[var(--accent)] font-semibold mt-2">View all episodes →</button>
-        )}
+        <div className="mt-2 flex items-center justify-between gap-2">
+          {animeSlug ? (
+            <button onClick={() => navigate({ name: 'donghua-detail', slug: animeSlug })} className="text-sm text-[var(--accent)] font-semibold">View all episodes →</button>
+          ) : <span />}
+          <button
+            onClick={async () => {
+              const shareUrl = window.location.href;
+              const payload = { title, text: `Watch ${title} on EpanDStream`, url: shareUrl };
+              try {
+                if (navigator.share) await navigator.share(payload);
+                else await navigator.clipboard.writeText(`${payload.text}\n${payload.url}`);
+                setShared(true);
+                setTimeout(() => setShared(false), 1600);
+              } catch {}
+            }}
+            className="liquid-glass rounded-full px-3 py-2 text-xs font-bold inline-flex items-center gap-1.5 shrink-0"
+          >
+            {shared ? <CheckIcon size={13} /> : <ShareIcon size={13} />}
+            {shared ? 'Shared' : 'Share'}
+          </button>
+        </div>
 
         <div className="grid grid-cols-2 gap-2 mt-4">
           <button disabled={!prevSlug} onClick={() => prevSlug && navigate({ name: 'donghua-episode', slug: prevSlug })} className="liquid-glass rounded-2xl py-3 px-3 inline-flex items-center justify-center gap-1.5 text-sm font-semibold disabled:opacity-40">

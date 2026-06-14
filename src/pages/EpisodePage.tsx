@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import { useRouter } from '../context/RouterContext';
-import { ChevronLeftIcon, ChevronRightIcon, PlayIcon, ClockIcon, ChevronDownIcon, TvIcon, DownloadIcon } from '../components/Icon';
+import { ChevronLeftIcon, ChevronRightIcon, PlayIcon, ClockIcon, ChevronDownIcon, TvIcon, DownloadIcon, ShareIcon, CheckIcon } from '../components/Icon';
 
 export function EpisodePage({ slug }: { slug: string }) {
   const { back, navigate } = useRouter();
@@ -12,6 +12,7 @@ export function EpisodePage({ slug }: { slug: string }) {
   const [activeServer, setActiveServer] = useState<string>('');
   const [openServers, setOpenServers] = useState(true);
   const [openDownloads, setOpenDownloads] = useState(false);
+  const [shared, setShared] = useState(false);
 
   useEffect(() => {
     let m = true;
@@ -108,16 +109,32 @@ export function EpisodePage({ slug }: { slug: string }) {
             <ClockIcon size={11} /> {releaseTime}
           </div>
         )}
-        {animeSlug && (
-          <div className="mt-2">
+        <div className="mt-2 flex items-center justify-between gap-2">
+          {animeSlug ? (
             <button
               onClick={() => navigate({ name: 'detail', slug: animeSlug })}
               className="text-sm text-[var(--accent)] font-semibold"
             >
               View all episodes →
             </button>
-          </div>
-        )}
+          ) : <span />}
+          <button
+            onClick={async () => {
+              const shareUrl = window.location.href;
+              const payload = { title, text: `Watch ${title} on EpanDStream`, url: shareUrl };
+              try {
+                if (navigator.share) await navigator.share(payload);
+                else await navigator.clipboard.writeText(`${payload.text}\n${payload.url}`);
+                setShared(true);
+                setTimeout(() => setShared(false), 1600);
+              } catch {}
+            }}
+            className="liquid-glass rounded-full px-3 py-2 text-xs font-bold inline-flex items-center gap-1.5 shrink-0"
+          >
+            {shared ? <CheckIcon size={13} /> : <ShareIcon size={13} />}
+            {shared ? 'Shared' : 'Share'}
+          </button>
+        </div>
 
         {/* Nav prev/next */}
         <div className="grid grid-cols-2 gap-2 mt-4">

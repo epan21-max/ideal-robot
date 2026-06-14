@@ -2,7 +2,7 @@ import { useRouter, Route } from '../context/RouterContext';
 import { HomeIcon, SearchIcon, TagIcon, CalendarIcon, GridIcon } from './Icon';
 
 const items: { key: Route['name']; label: string; icon: any; route: Route }[] = [
-  { key: 'home', label: 'Home', icon: HomeIcon, route: { name: 'home' } },
+  { key: 'anime', label: 'Anime', icon: HomeIcon, route: { name: 'anime' } },
   { key: 'search', label: 'Search', icon: SearchIcon, route: { name: 'search' } },
   { key: 'library', label: 'Library', icon: GridIcon, route: { name: 'library', tab: 'ongoing' } },
   { key: 'schedule', label: 'Schedule', icon: CalendarIcon, route: { name: 'schedule' } },
@@ -28,7 +28,7 @@ export function BottomNav() {
               <button
                 key={it.key}
                 onClick={() => navigate(it.route)}
-                className="flex-1 flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-2xl relative"
+                className="flex-1 flex flex-col items-center justify-center gap-0.7 py-1.5 rounded-2xl relative"
               >
                 <div className={`flex items-center justify-center w-10 h-7 rounded-full transition-all duration-300 ${active ? 'bg-[var(--accent)] text-white scale-110' : 'opacity-60'}`}>
                   <Icon size={18} />

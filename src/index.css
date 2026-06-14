@@ -25,6 +25,9 @@
   --blob-a: rgba(10, 132, 255, 0.16);
   --blob-b: rgba(94, 92, 230, 0.14);
   --blob-c: rgba(175, 82, 222, 0.12);
+  --glass-blur: 24px;
+  --glass-strong-blur: 40px;
+  --island-blur: 30px;
 }
 
 /* ===== COLOR THEMES (set --accent + decorative tints) ===== */
@@ -79,8 +82,8 @@ body {
 /* Liquid Glass Effect */
 .liquid-glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
   border: 1px solid var(--glass-border);
   box-shadow: 
     0 1px 0 0 rgba(255,255,255,0.1) inset,
@@ -89,8 +92,8 @@ body {
 
 .liquid-glass-strong {
   background: var(--glass-bg);
-  backdrop-filter: blur(40px) saturate(200%);
-  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  backdrop-filter: blur(var(--glass-strong-blur)) saturate(200%);
+  -webkit-backdrop-filter: blur(var(--glass-strong-blur)) saturate(200%);
   border: 1px solid var(--glass-border);
   box-shadow: 
     0 1px 0 0 rgba(255,255,255,0.15) inset,
@@ -99,8 +102,8 @@ body {
 
 .island-glass {
   background: var(--island-bg);
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(var(--island-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--island-blur)) saturate(180%);
   box-shadow: 
     0 1px 0 0 rgba(255,255,255,0.08) inset,
     0 10px 40px rgba(0,0,0,0.4),
@@ -390,6 +393,13 @@ body[data-style="neo"] .island-glass {
   border: 2.5px solid #ffffff !important;
   box-shadow: 5px 5px 0 0 #000, 0 12px 40px rgba(0,0,0,0.5) !important;
 }
+body[data-style="neo"] .home-banner {
+  background: var(--app-bg) !important;
+  color: var(--app-fg) !important;
+  border: 3px solid var(--app-fg);
+  box-shadow: 8px 8px 0 0 var(--accent);
+}
+body[data-style="neo"] .home-banner > .absolute { opacity: 0.08 !important; }
 /* Snappy press: push the block into its shadow */
 body[data-style="neo"] button:active,
 body[data-style="neo"] a:active {
@@ -453,6 +463,12 @@ body[data-style="soft-neo"] .blob-bg { opacity: 0.28; }
 body[data-style="soft-neo"] .island-glass {
   border: 2px solid rgba(255,255,255,0.85) !important;
   box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 6px 0 -2px rgba(255,255,255,0.5) !important;
+}
+body[data-style="soft-neo"] .home-banner {
+  background: color-mix(in srgb, var(--accent) 20%, var(--app-bg)) !important;
+  color: var(--app-fg) !important;
+  border: 2px solid var(--app-fg);
+  box-shadow: 0 8px 0 -2px var(--app-fg), 0 18px 38px -18px var(--glass-shadow);
 }
 body[data-style="soft-neo"] button,
 body[data-style="soft-neo"] a {
@@ -548,6 +564,10 @@ body[data-style="neon"] .island-glass {
   border: 1px solid color-mix(in srgb, var(--neon-color) 50%, transparent) !important;
   box-shadow: 0 0 24px -4px var(--neon-glow), 0 10px 40px rgba(0,0,0,0.6), 0 1px 0 0 rgba(255,255,255,0.08) inset !important;
 }
+body[data-style="neon"] .home-banner {
+  border: 1px solid color-mix(in srgb, var(--neon-color) 60%, transparent);
+  box-shadow: 0 0 30px -6px var(--neon-glow), inset 0 0 28px -18px var(--neon-glow);
+}
 body[data-style="neon"] button,
 body[data-style="neon"] a {
   transition: all 0.3s ease !important;
@@ -599,4 +619,58 @@ body[data-style="mono"] .text-emerald-500 {
 }
 body[data-style="mono"] img {
   filter: grayscale(1) contrast(0.95);
+}
+
+/* =================================================================
+   PERFORMANCE GUARDS — keep weak / older phones smooth.
+   These rules reduce expensive blur and motion while preserving layout.
+   ================================================================= */
+@media (max-width: 480px) {
+  :root {
+    --glass-blur: 12px;
+    --glass-strong-blur: 16px;
+    --island-blur: 18px;
+  }
+
+  .blob-bg {
+    filter: blur(42px);
+    opacity: 0.18;
+    animation-duration: 30s;
+  }
+
+  main section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 520px;
+  }
+
+  .liquid-glass,
+  .liquid-glass-strong {
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.08) inset, 0 8px 24px var(--glass-shadow);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .blob-bg {
+    animation: none !important;
+  }
+}
+
+/* Global animation toggle from settings */
+body[data-animations="off"] *,
+body[data-animations="off"] *::before,
+body[data-animations="off"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+body[data-animations="off"] .blob-bg {
+  animation: none !important;
 }

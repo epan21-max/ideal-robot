@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { DotsIcon, InboxIcon, InfoIcon, SettingsIcon, CloseIcon, SunIcon, MoonIcon, TypeIcon, CheckIcon, TrashIcon, BellIcon, SparklesIcon, HeartIcon, ChevronLeftIcon } from './Icon';
+import { DotsIcon, InboxIcon, InfoIcon, SettingsIcon, CloseIcon, SunIcon, MoonIcon, TypeIcon, CheckIcon, TrashIcon, BellIcon, SparklesIcon, HeartIcon, ChevronLeftIcon, TvIcon } from './Icon';
 import { useApp, FontTheme, Theme, ColorTheme, DesignStyle } from '../context/AppContext';
 import { useRouter as useAppRouter } from '../context/RouterContext';
 import iconWebs from '@/assets/epandstream.png';
@@ -102,7 +102,7 @@ export function DynamicIsland() {
               className="flex items-center gap-2 px-3 py-2 animate-fade-in whitespace-nowrap"
             >
               <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center">
-                <img src={iconWebs} alt="EpanDStream" className="w-7 h-7 rounded-full" />
+                <img src={iconWebs} />
               </div>
               <span className="text-[13px] font-semibold tracking-tight">EpanDStream</span>
               <span className="ml-1 w-7 h-7 rounded-full bg-white/10 flex items-center justify-center relative">
@@ -181,7 +181,7 @@ function MenuPanel({ onSelect, unreadCount }: { onSelect: (p: Panel) => void; un
         <div className="text-[10px] uppercase tracking-widest text-white/40 px-3 mb-1.5">Content</div>
         <div className="liquid-glass rounded-2xl p-1 mx-1 mb-3 flex">
           <button
-            onClick={() => { navigate({ name: 'home' }); onSelect(null); }}
+            onClick={() => { navigate({ name: 'anime' }); onSelect(null); }}
             className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300 ${!isDonghua ? 'bg-white/15' : 'text-white/50'}`}
           >
             Anime
@@ -194,6 +194,22 @@ function MenuPanel({ onSelect, unreadCount }: { onSelect: (p: Panel) => void; un
           </button>
         </div>
       </div>
+
+      {/* Donate shortcut */}
+      <button
+        onClick={() => { navigate({ name: 'donate' }); onSelect(null); }}
+        className="w-full flex items-center gap-3 px-3 py-3 rounded-2xl bg-[var(--accent)]/15 hover:bg-[var(--accent)]/20 active:bg-[var(--accent)]/25 text-left transition-all duration-200 mx-1 mb-2"
+        style={{ animation: `staggerItem 0.35s 0.04s both` }}
+      >
+        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+          <TvIcon size={18} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-semibold">Donate</div>
+          <div className="text-xs text-white/60 truncate">Saweria, QRIS & support project</div>
+        </div>
+      </button>
+
       {items.map((i, idx) => (
         <button
           key={i.key}
@@ -272,16 +288,15 @@ function AboutPanel() {
   return (
     <div className="p-4 space-y-4">
       <div className="text-center py-4" style={{ animation: 'staggerItem 0.4s 0.1s both' }}>
-        <div className="mx-auto w-16 h-16 rounded-2xl from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center mb-3 shadow-xl">
-          <img src={iconWebs} Alt="EpanDStream" className="w-16 h-16 rounded-2xl" />
+        <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center mb-3 shadow-xl">
+          <img src={iconWebs} />
         </div>
         <div className="text-lg font-bold tracking-tight">EpanDStream</div>
-        <div className="text-xs text-white/50 mt-0.5">Version 3.0.2 · Premium Edition</div>
+        <div className="text-xs text-white/50 mt-0.5">Version 3.1.3 · Premium Edition</div>
       </div>
       <div className="bg-white/5 rounded-2xl p-3 space-y-2" style={{ animation: 'staggerItem 0.4s 0.2s both' }}>
         <Row label="Developer" value="EpannXD" />
         <Row label="API Provider" value="Sankavollerei" />
-        <Row label="UI Framework" value="React + Tailwind" />
       </div>
       <div className="bg-white/5 rounded-2xl p-3" style={{ animation: 'staggerItem 0.4s 0.3s both' }}>
         <div className="text-[11px] uppercase tracking-widest text-white/40 mb-1">About</div>
@@ -312,6 +327,7 @@ function SettingsPanel() {
     colorTheme, setColorTheme,
     designStyle, setDesignStyle,
     neonColor, setNeonColor,
+    animationsEnabled, setAnimationsEnabled,
   } = useApp();
 
   const themes: { key: Theme; label: string; icon: React.ReactNode }[] = [
@@ -462,6 +478,28 @@ function SettingsPanel() {
         </div>
       </section>
 
+      {/* Motion */}
+      <section style={{ animation: 'staggerItem 0.4s 0.22s both' }}>
+        <div className="text-[11px] uppercase tracking-widest text-white/40 mb-2 px-1 flex items-center justify-between">
+          <span>Motion</span>
+          <span className="text-[10px] text-white/60 normal-case tracking-normal">{animationsEnabled ? 'Animations on' : 'Animations off'}</span>
+        </div>
+        <div className="liquid-glass rounded-2xl p-1 flex gap-1">
+          <button
+            onClick={() => setAnimationsEnabled(true)}
+            className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300 ${animationsEnabled ? 'bg-white/15' : 'text-white/50'}`}
+          >
+            On
+          </button>
+          <button
+            onClick={() => setAnimationsEnabled(false)}
+            className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300 ${!animationsEnabled ? 'bg-white/15' : 'text-white/50'}`}
+          >
+            Off
+          </button>
+        </div>
+      </section>
+
       {/* Reset to default */}
       <section style={{ animation: 'staggerItem 0.4s 0.25s both' }}>
         <button
@@ -471,6 +509,7 @@ function SettingsPanel() {
             setColorTheme('midnight');
             setDesignStyle('liquid');
             setNeonColor('#00f0ff');
+            setAnimationsEnabled(true);
           }}
           className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border border-red-400/30 bg-red-500/10 text-red-300 text-xs font-bold hover:bg-red-500/20 active:scale-95 transition-all"
         >
