@@ -1,136 +1,602 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #FF6B35;
-  --color-secondary: #004E89;
-  --color-accent: #FCBF49;
-  --color-dark: #1A1A2E;
-  --color-darker: #0F0F1A;
-  --color-surface: #16213E;
-  --color-surface-light: #1E2D4A;
-  --color-border-brutal: #000000;
-  --color-text-primary: #F5F5F5;
-  --color-text-secondary: #A0AEC0;
-  --color-success: #48BB78;
-  --color-danger: #F56565;
-  --color-purple: #9F7AEA;
-  --font-sans: 'Space Grotesk', sans-serif;
-  --font-mono: 'Space Mono', monospace;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-elegant: 'DM Serif Display', serif;
 }
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) var(--color-darker);
+:root {
+  --app-bg: #ffffff;
+  --app-fg: #0a0a0a;
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-shadow: rgba(0, 0, 0, 0.1);
+  --island-bg: rgba(20, 20, 22, 0.95);
+  --island-fg: #ffffff;
+  --accent: #0a84ff;
+  --muted: rgba(0, 0, 0, 0.5);
+  --surface: rgba(0, 0, 0, 0.04);
+  --surface-hover: rgba(0, 0, 0, 0.08);
+  --neon-color: #00f0ff;
+  --neon-glow: rgba(0, 240, 255, 0.55);
+  --blob-a: rgba(10, 132, 255, 0.16);
+  --blob-b: rgba(94, 92, 230, 0.14);
+  --blob-c: rgba(175, 82, 222, 0.12);
+}
+
+/* ===== COLOR THEMES (set --accent + decorative tints) ===== */
+body[data-color-theme="midnight"] { --accent: #0a84ff; --blob-a: rgba(10,132,255,0.16); --blob-b: rgba(94,92,230,0.14); --blob-c: rgba(175,82,222,0.12); }
+body[data-color-theme="rose"] { --accent: #ff375f; --blob-a: rgba(255,55,95,0.16); --blob-b: rgba(255,100,130,0.14); --blob-c: rgba(255,159,10,0.12); }
+body[data-color-theme="forest"] { --accent: #30d158; --blob-a: rgba(48,209,88,0.16); --blob-b: rgba(52,199,89,0.13); --blob-c: rgba(36,138,61,0.12); }
+body[data-color-theme="ocean"] { --accent: #64d2ff; --blob-a: rgba(100,210,255,0.16); --blob-b: rgba(10,132,255,0.14); --blob-c: rgba(48,209,204,0.12); }
+body[data-color-theme="sunset"] { --accent: #ff9f0a; --blob-a: rgba(255,159,10,0.18); --blob-b: rgba(255,69,58,0.14); --blob-c: rgba(255,55,95,0.12); }
+body[data-color-theme="lavender"] { --accent: #bf5af2; --blob-a: rgba(191,90,242,0.16); --blob-b: rgba(139,92,246,0.14); --blob-c: rgba(125,95,255,0.12); }
+body[data-color-theme="crimson"] { --accent: #ff453a; --blob-a: rgba(255,69,58,0.16); --blob-b: rgba(191,29,13,0.14); --blob-c: rgba(255,90,80,0.12); }
+body[data-color-theme="gold"] { --accent: #ffd60a; --blob-a: rgba(255,214,10,0.18); --blob-b: rgba(255,159,10,0.14); --blob-c: rgba(255,204,0,0.12); }
+body[data-color-theme="mint"] { --accent: #63e6e2; --blob-a: rgba(99,230,226,0.16); --blob-b: rgba(48,209,204,0.13); --blob-c: rgba(94,234,212,0.12); }
+body[data-color-theme="grape"] { --accent: #7c5cfc; --blob-a: rgba(124,92,252,0.16); --blob-b: rgba(149,92,255,0.14); --blob-c: rgba(105,80,240,0.12); }
+
+.dark {
+  --app-bg: #000000;
+  --app-fg: #f5f5f7;
+  --glass-bg: rgba(28, 28, 30, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.5);
+  --island-bg: rgba(10, 10, 12, 0.95);
+  --island-fg: #ffffff;
+  --accent: #0a84ff;
+  --muted: rgba(255, 255, 255, 0.55);
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-hover: rgba(255, 255, 255, 0.1);
+}
+
+html, body, #root {
+  height: 100%;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
+  background: var(--app-bg);
+  color: var(--app-fg);
   font-family: var(--font-sans);
-  background-color: var(--color-darker);
-  color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.5s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
-.neo-brutal {
-  border: 3px solid var(--color-border-brutal);
-  box-shadow: 4px 4px 0px var(--color-border-brutal);
-  transition: all 0.15s ease;
+/* Font theme classes */
+.font-theme-inter { font-family: 'Inter', system-ui, sans-serif; }
+.font-theme-grotesk { font-family: 'Space Grotesk', sans-serif; }
+.font-theme-playfair { font-family: 'Playfair Display', serif; }
+.font-theme-mono { font-family: 'JetBrains Mono', monospace; }
+.font-theme-elegant { font-family: 'DM Serif Display', serif; }
+
+/* Liquid Glass Effect */
+.liquid-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 
+    0 1px 0 0 rgba(255,255,255,0.1) inset,
+    0 8px 32px var(--glass-shadow);
 }
 
-.neo-brutal:hover {
-  box-shadow: 6px 6px 0px var(--color-border-brutal);
-  transform: translate(-2px, -2px);
+.liquid-glass-strong {
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 
+    0 1px 0 0 rgba(255,255,255,0.15) inset,
+    0 20px 60px var(--glass-shadow);
 }
 
-.neo-brutal:active {
-  box-shadow: 2px 2px 0px var(--color-border-brutal);
-  transform: translate(1px, 1px);
+.island-glass {
+  background: var(--island-bg);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  box-shadow: 
+    0 1px 0 0 rgba(255,255,255,0.08) inset,
+    0 10px 40px rgba(0,0,0,0.4),
+    0 0 0 0.5px rgba(255,255,255,0.06);
 }
 
-.neo-brutal-sm {
-  border: 2px solid var(--color-border-brutal);
-  box-shadow: 3px 3px 0px var(--color-border-brutal);
+/* Smooth scroll */
+* {
+  scroll-behavior: smooth;
 }
 
-.neo-card {
-  border: 3px solid var(--color-border-brutal);
-  box-shadow: 5px 5px 0px var(--color-border-brutal);
-  background: var(--color-surface);
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
 }
 
-.neo-tag {
-  border: 2px solid var(--color-border-brutal);
-  box-shadow: 2px 2px 0px var(--color-border-brutal);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.line-clamp-1 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-}
-
-.line-clamp-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.line-clamp-3 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-marquee {
-  animation: marquee 20s linear infinite;
+/* Page transitions */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-out forwards;
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-@keyframes pulse-border {
-  0%, 100% { border-color: var(--color-primary); }
-  50% { border-color: var(--color-accent); }
+.animate-page-in {
+  animation: pageIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.animate-pulse-border {
-  animation: pulse-border 2s ease-in-out infinite;
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes islandExpand {
+  0% {
+    transform: translateX(-50%) scale(0.95);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(-50%) scale(1.02);
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes islandOpen {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes staggerItem {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes islandFloat {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-2px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.animate-fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fade-in { animation: fadeIn 0.4s ease both; }
+.animate-scale-in { animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-island-expand { animation: islandExpand 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.animate-island-float { animation: islandFloat 4s ease-in-out infinite; }
 
 .skeleton {
-  background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-surface-light) 50%, var(--color-surface) 75%);
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-hover) 50%, var(--surface) 75%);
   background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
+  animation: shimmer 1.5s infinite;
 }
 
-@keyframes skeleton-loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+/* Hide scrollbars but allow scrolling */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Stagger animation helpers */
+.stagger > * { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.stagger > *:nth-child(1) { animation-delay: 0.03s; }
+.stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.stagger > *:nth-child(3) { animation-delay: 0.09s; }
+.stagger > *:nth-child(4) { animation-delay: 0.12s; }
+.stagger > *:nth-child(5) { animation-delay: 0.15s; }
+.stagger > *:nth-child(6) { animation-delay: 0.18s; }
+.stagger > *:nth-child(7) { animation-delay: 0.21s; }
+.stagger > *:nth-child(8) { animation-delay: 0.24s; }
+.stagger > *:nth-child(9) { animation-delay: 0.27s; }
+.stagger > *:nth-child(10) { animation-delay: 0.30s; }
+
+/* Liquid blob gradient backgrounds */
+.blob-bg {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  pointer-events: none;
+  animation: blobMove 20s ease-in-out infinite;
+}
+
+@keyframes blobMove {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+button, a {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, background-color 0.2s ease;
+}
+
+button:active, a:active {
+  transform: scale(0.96);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Video player */
+video {
+  background: #000;
+  border-radius: 16px;
+}
+
+/* iframe */
+iframe {
+  border: none;
+}
+
+/* Text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===================================================================
+   DESIGN STYLES — full transformation of UI, background, typography,
+   buttons, animations & transitions. Each style changes the whole app.
+   The Dynamic Island keeps a dark core for readable white text but
+   adopts each style's border / shadow character.
+   =================================================================== */
+
+/* =================================================================
+   NEO-BRUTALISM — hard edges, thick borders, offset shadows, flat
+   blocks, bold uppercase headings, snappy mechanical motion.
+   ================================================================= */
+body[data-style="neo"] {
+  --glass-shadow: rgba(0, 0, 0, 0.85);
+  background-color: var(--app-bg) !important;
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--accent) 35%, transparent) 1.6px,
+    transparent 1.6px
+  );
+  background-size: 24px 24px;
+}
+body[data-style="neo"].dark {
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--accent) 45%, transparent) 1.6px,
+    transparent 1.6px
+  );
+}
+/* Sharp corners on large containers */
+body[data-style="neo"] .rounded-2xl,
+body[data-style="neo"] .rounded-3xl,
+body[data-style="neo"] .rounded-\[28px\],
+body[data-style="neo"] .rounded-\[26px\] { border-radius: 8px !important; }
+/* Glass → flat brutalist blocks */
+body[data-style="neo"] .liquid-glass,
+body[data-style="neo"] .liquid-glass-strong {
+  background: var(--app-bg) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 2.5px solid var(--app-fg) !important;
+  box-shadow: 6px 6px 0 0 var(--app-fg) !important;
+}
+/* Surface chips become bordered blocks */
+body[data-style="neo"] .bg-\[var\(--surface\)\] {
+  background: var(--app-bg) !important;
+  border: 2px solid var(--app-fg);
+}
+/* Primary action buttons get a colored offset shadow */
+body[data-style="neo"] .bg-\[var\(--app-fg\)\] {
+  border: 2.5px solid var(--app-fg) !important;
+  box-shadow: 4px 4px 0 0 var(--accent) !important;
+}
+/* Accent fills get a hard black offset */
+body[data-style="neo"] .bg-\[var\(--accent\)\] {
+  border: 2px solid var(--app-fg) !important;
+  box-shadow: 3px 3px 0 0 var(--app-fg) !important;
+}
+/* Bold uppercase headings */
+body[data-style="neo"] h1,
+body[data-style="neo"] h2,
+body[data-style="neo"] h3 {
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+body[data-style="neo"] .blob-bg { display: none !important; }
+/* Dynamic Island: hard white border + offset */
+body[data-style="neo"] .island-glass {
+  border: 2.5px solid #ffffff !important;
+  box-shadow: 5px 5px 0 0 #000, 0 12px 40px rgba(0,0,0,0.5) !important;
+}
+/* Snappy press: push the block into its shadow */
+body[data-style="neo"] button:active,
+body[data-style="neo"] a:active {
+  transform: translate(3px, 3px) !important;
+}
+body[data-style="neo"] button,
+body[data-style="neo"] a {
+  transition: transform 0.09s ease-out, box-shadow 0.09s ease-out, background-color 0.12s !important;
+}
+/* Snappy mechanical entrance */
+@keyframes neoIn {
+  from { opacity: 0; transform: translate(10px, -10px); }
+  to { opacity: 1; transform: translate(0, 0); }
+}
+body[data-style="neo"] .animate-page-in,
+body[data-style="neo"] .animate-fade-in,
+body[data-style="neo"] .animate-fade-in-up,
+body[data-style="neo"] .animate-slide-up,
+body[data-style="neo"] .animate-scale-in {
+  animation: neoIn 0.26s cubic-bezier(0.7, 0, 0.3, 1) both !important;
+}
+body[data-style="neo"] .animate-island-expand {
+  animation: neoIn 0.26s cubic-bezier(0.7, 0, 0.3, 1) both !important;
+}
+body[data-style="neo"] .stagger > * {
+  animation: neoIn 0.3s cubic-bezier(0.7, 0, 0.3, 1) both !important;
+}
+
+/* =================================================================
+   SOFT NEO-BRUTALISM — pastel accent tints, chunky rounded corners,
+   soft layered shadows, playful springy motion.
+   ================================================================= */
+body[data-style="soft-neo"] {
+  --glass-shadow: rgba(0, 0, 0, 0.18);
+}
+/* Extra-rounded, chunky containers */
+body[data-style="soft-neo"] .rounded-2xl { border-radius: 24px !important; }
+body[data-style="soft-neo"] .rounded-3xl,
+body[data-style="soft-neo"] .rounded-\[28px\],
+body[data-style="soft-neo"] .rounded-\[26px\] { border-radius: 30px !important; }
+body[data-style="soft-neo"] .liquid-glass,
+body[data-style="soft-neo"] .liquid-glass-strong {
+  background: color-mix(in srgb, var(--accent) 10%, var(--app-bg)) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 2px solid var(--app-fg) !important;
+  box-shadow: 0 7px 0 -2px var(--app-fg), 0 16px 30px -12px var(--glass-shadow) !important;
+}
+body[data-style="soft-neo"] .bg-\[var\(--surface\)\] {
+  background: color-mix(in srgb, var(--accent) 14%, var(--app-bg)) !important;
+  border: 1.5px solid color-mix(in srgb, var(--app-fg) 40%, transparent);
+}
+body[data-style="soft-neo"] .bg-\[var\(--app-fg\)\] {
+  box-shadow: 0 5px 0 -1px color-mix(in srgb, var(--accent) 70%, transparent) !important;
+}
+body[data-style="soft-neo"] .bg-\[var\(--accent\)\] {
+  border: 2px solid var(--app-fg) !important;
+  box-shadow: 0 5px 0 -1px var(--app-fg) !important;
+}
+body[data-style="soft-neo"] .blob-bg { opacity: 0.28; }
+body[data-style="soft-neo"] .island-glass {
+  border: 2px solid rgba(255,255,255,0.85) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 6px 0 -2px rgba(255,255,255,0.5) !important;
+}
+body[data-style="soft-neo"] button,
+body[data-style="soft-neo"] a {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s !important;
+}
+/* Playful springy entrance with overshoot */
+@keyframes softNeoIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+body[data-style="soft-neo"] .animate-page-in,
+body[data-style="soft-neo"] .animate-fade-in,
+body[data-style="soft-neo"] .animate-fade-in-up,
+body[data-style="soft-neo"] .animate-slide-up,
+body[data-style="soft-neo"] .animate-scale-in {
+  animation: softNeoIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
+}
+body[data-style="soft-neo"] .animate-island-expand {
+  animation: softNeoIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
+}
+body[data-style="soft-neo"] .stagger > * {
+  animation: softNeoIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
+}
+
+/* =================================================================
+   NEON — dark cyberpunk void, glowing grid, electric edges, pulsing
+   glow on focal elements, blur-in entrance, glowing headings.
+   ================================================================= */
+body[data-style="neon"] {
+  --accent: var(--neon-color);
+  --app-bg: #06060c;
+  --app-fg: #eaeaff;
+  --muted: rgba(234, 234, 255, 0.5);
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-hover: rgba(255, 255, 255, 0.12);
+  --glass-shadow: rgba(0, 0, 0, 0.6);
+  background-color: #06060c !important;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--neon-color) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--neon-color) 9%, transparent) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+body[data-style="neon"] .liquid-glass,
+body[data-style="neon"] .liquid-glass-strong {
+  background: rgba(12, 12, 28, 0.55) !important;
+  backdrop-filter: blur(14px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+  border: 1px solid color-mix(in srgb, var(--neon-color) 55%, transparent) !important;
+  box-shadow: 0 0 18px -3px var(--neon-glow), inset 0 0 14px -8px var(--neon-glow) !important;
+}
+body[data-style="neon"] .blob-bg {
+  background: var(--neon-color) !important;
+  opacity: 0.2;
+}
+/* Glowing headings */
+body[data-style="neon"] h1,
+body[data-style="neon"] h2,
+body[data-style="neon"] h3 {
+  color: #ffffff;
+  text-shadow: 0 0 14px var(--neon-glow), 0 0 4px var(--neon-glow);
+}
+/* Accent buttons & fills glow */
+body[data-style="neon"] .bg-\[var\(--accent\)\] {
+  border: 1px solid var(--neon-color) !important;
+  box-shadow: 0 0 18px var(--neon-glow), inset 0 0 10px rgba(255,255,255,0.18) !important;
+}
+body[data-style="neon"] .bg-\[var\(--app-fg\)\] {
+  background: var(--neon-color) !important;
+  color: #06060c !important;
+  border: 1px solid var(--neon-color) !important;
+  box-shadow: 0 0 18px var(--neon-glow) !important;
+}
+/* Neon recolor of semantic accents */
+body[data-style="neon"] .text-emerald-500,
+body[data-style="neon"] .text-yellow-500,
+body[data-style="neon"] .text-red-500 {
+  color: var(--neon-color) !important;
+  filter: drop-shadow(0 0 4px var(--neon-glow));
+}
+body[data-style="neon"] .text-\[var\(--accent\)\] {
+  color: var(--neon-color) !important;
+  text-shadow: 0 0 8px var(--neon-glow);
+}
+/* Focal containers get a gentle continuous glow pulse */
+@keyframes neonPulse {
+  0%, 100% { box-shadow: 0 0 14px -4px var(--neon-glow), inset 0 0 14px -8px var(--neon-glow); }
+  50% { box-shadow: 0 0 26px 0 var(--neon-glow), inset 0 0 16px -6px var(--neon-glow); }
+}
+body[data-style="neon"] .liquid-glass-strong {
+  animation: neonPulse 4s ease-in-out infinite;
+}
+body[data-style="neon"] .island-glass {
+  border: 1px solid color-mix(in srgb, var(--neon-color) 50%, transparent) !important;
+  box-shadow: 0 0 24px -4px var(--neon-glow), 0 10px 40px rgba(0,0,0,0.6), 0 1px 0 0 rgba(255,255,255,0.08) inset !important;
+}
+body[data-style="neon"] button,
+body[data-style="neon"] a {
+  transition: all 0.3s ease !important;
+}
+/* Electric blur-in entrance */
+@keyframes neonIn {
+  from { opacity: 0; filter: blur(10px); transform: scale(0.98); }
+  to { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+body[data-style="neon"] .animate-page-in,
+body[data-style="neon"] .animate-fade-in,
+body[data-style="neon"] .animate-fade-in-up,
+body[data-style="neon"] .animate-slide-up,
+body[data-style="neon"] .animate-scale-in {
+  animation: neonIn 0.5s ease both !important;
+}
+body[data-style="neon"] .animate-island-expand {
+  animation: neonIn 0.5s ease both !important;
+}
+body[data-style="neon"] .stagger > * {
+  animation: neonIn 0.5s ease both !important;
+}
+
+/* =================================================================
+   MONOCHROME — grayscale, muted accent, calm glass.
+   ================================================================= */
+body[data-style="mono"] { --accent: #8a8a8e; }
+body[data-style="mono"].dark { --accent: #aeaeb2; }
+body[data-style="mono"] .liquid-glass,
+body[data-style="mono"] .liquid-glass-strong {
+  background: color-mix(in srgb, var(--app-fg) 6%, var(--app-bg));
+  backdrop-filter: blur(16px) saturate(110%);
+  -webkit-backdrop-filter: blur(16px) saturate(110%);
+  border: 1px solid color-mix(in srgb, var(--app-fg) 14%, transparent);
+  box-shadow: 0 8px 24px var(--glass-shadow);
+  border-radius: 20px;
+}
+body[data-style="mono"] .blob-bg {
+  background: var(--app-fg) !important;
+  filter: grayscale(1);
+  opacity: 0.06;
+}
+body[data-style="mono"] .text-yellow-500,
+body[data-style="mono"] .text-yellow-400,
+body[data-style="mono"] .text-red-500,
+body[data-style="mono"] .text-red-400,
+body[data-style="mono"] .text-emerald-500 {
+  color: var(--app-fg) !important;
+}
+body[data-style="mono"] img {
+  filter: grayscale(1) contrast(0.95);
 }

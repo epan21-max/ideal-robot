@@ -1,114 +1,97 @@
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-import Navbar from './components/Navbar';
-import HomePage from './pages/HomePage';
-import AnimeHomePage from './pages/anime/AnimeHomePage';
-import AnimeSchedulePage from './pages/anime/AnimeSchedulePage';
-import AnimeDetailPage from './pages/anime/AnimeDetailPage';
-import AnimeWatchPage from './pages/anime/AnimeWatchPage';
-import AnimeSearchPage from './pages/anime/AnimeSearchPage';
-import DonghuaHomePage from './pages/donghua/DonghuaHomePage';
-import DonghuaSchedulePage from './pages/donghua/DonghuaSchedulePage';
-import DonghuaDetailPage from './pages/donghua/DonghuaDetailPage';
-import DonghuaWatchPage from './pages/donghua/DonghuaWatchPage';
-import DonghuaSearchPage from './pages/donghua/DonghuaSearchPage';
-import ComicHomePage from './pages/comic/ComicHomePage';
-import ComicDetailPage from './pages/comic/ComicDetailPage';
-import ComicGenresPage from './pages/comic/ComicGenresPage';
-import ComicSearchPage from './pages/comic/ComicSearchPage';
-import ComicReadPage from './pages/comic/ComicReadPage';
-import ComicByGenrePage from './pages/comic/ComicByGenrePage';
-import NovelHomePage from './pages/novel/NovelHomePage';
-import NovelDetailPage from './pages/novel/NovelDetailPage';
-import NovelSearchPage from './pages/novel/NovelSearchPage';
-import NovelReadPage from './pages/novel/NovelReadPage';
-import NovelGenresPage from './pages/novel/NovelGenresPage';
-import FavoritePage from './pages/FavoritePage';
-import AboutPage from './pages/AboutPage';
-import UpdatesPage from './pages/UpdatesPage';
-import FloatingInbox from './components/FloatingInbox';
-import DrachinHomePage from './pages/drachin/DrachinHomePage';
-import DrachinSearchPage from './pages/drachin/DrachinSearchPage';
-import DrachinDetailPage from './pages/drachin/DrachinDetailPage';
-import DrachinWatchPage from './pages/drachin/DrachinWatchPage';
+import { AppProvider } from './context/AppContext';
+import { RouterProvider, useRouter } from './context/RouterContext';
+import { DynamicIsland } from './components/DynamicIsland';
+import { BottomNav } from './components/BottomNav';
+import { DonghuaNav } from './components/DonghuaNav';
+import { HomePage } from './pages/HomePage';
+import { SearchPage } from './pages/SearchPage';
+import { LibraryPage } from './pages/LibraryPage';
+import { FavoritesPage } from './pages/FavoritesPage';
+import { SchedulePage } from './pages/SchedulePage';
+import { GenrePage } from './pages/GenrePage';
+import { DetailPage } from './pages/DetailPage';
+import { EpisodePage } from './pages/EpisodePage';
+import { DonghuaHomePage } from './pages/DonghuaHomePage';
+import { DonghuaLibraryPage } from './pages/DonghuaLibraryPage';
+import { DonghuaSearchPage } from './pages/DonghuaSearchPage';
+import { DonghuaSchedulePage } from './pages/DonghuaSchedulePage';
+import { DonghuaGenrePage } from './pages/DonghuaGenrePage';
+import { DonghuaDetailPage } from './pages/DonghuaDetailPage';
+import { DonghuaEpisodePage } from './pages/DonghuaEpisodePage';
+import { GenreDetailPage } from './pages/GenreDetailPage';
+import { DonghuaGenreDetailPage } from './pages/DonghuaGenreDetailPage';
+import { FlyingFavorite } from './components/FlyingFavorite';
+import { useEffect, useState } from 'react';
 
-function ScrollToTop() {
-  const { pathname } = useLocation();
+const donghuaRouteNames = ['donghua','donghua-search','donghua-library','donghua-schedule','donghua-genre','donghua-detail','donghua-episode','donghua-genre-detail'];
+const noNavRoutes = ['detail','episode','donghua-detail','donghua-episode'];
+
+function Routes() {
+  const { route } = useRouter();
+  const [key, setKey] = useState(0);
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  return null;
-}
+    setKey(k => k + 1);
+  }, [route]);
 
-function Layout() {
-  const location = useLocation();
+  let page: React.ReactNode = null;
+  switch (route.name) {
+    case 'home': page = <HomePage />; break;
+    case 'search': page = <SearchPage />; break;
+    case 'library': page = <LibraryPage />; break;
+    case 'favorites': page = <FavoritesPage />; break;
+    case 'schedule': page = <SchedulePage />; break;
+    case 'genre': page = <GenrePage />; break;
+    case 'genre-detail': page = <GenreDetailPage slug={route.slug} genreName={route.genreName} />; break;
+    case 'detail': page = <DetailPage slug={route.slug} />; break;
+    case 'episode': page = <EpisodePage slug={route.slug} />; break;
+    // Donghua routes
+    case 'donghua': page = <DonghuaHomePage />; break;
+    case 'donghua-search': page = <DonghuaSearchPage />; break;
+    case 'donghua-library': page = <DonghuaLibraryPage />; break;
+    case 'donghua-schedule': page = <DonghuaSchedulePage />; break;
+    case 'donghua-genre': page = <DonghuaGenrePage />; break;
+    case 'donghua-genre-detail': page = <DonghuaGenreDetailPage slug={route.slug} genreName={route.genreName} />; break;
+    case 'donghua-detail': page = <DonghuaDetailPage slug={route.slug} />; break;
+    case 'donghua-episode': page = <DonghuaEpisodePage slug={route.slug} />; break;
+  }
+
+  const isDonghua = donghuaRouteNames.includes(route.name);
+  const showNav = !noNavRoutes.includes(route.name);
 
   return (
-    <div className="min-h-screen bg-darker">
-      <Navbar />
-      <ScrollToTop />
-      <FloatingInbox />
-      <main className="pt-[3.5rem] md:pt-[6.5rem]" key={location.pathname}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          
-          {/* Anime Routes */}
-          <Route path="/s/anime/" element={<AnimeHomePage />} />
-          <Route path="/s/anime/schedule" element={<AnimeSchedulePage />} />
-          <Route path="/s/anime/detail/:slug" element={<AnimeDetailPage />} />
-          <Route path="/s/anime/watch/:episodeId" element={<AnimeWatchPage />} />
-          <Route path="/s/anime/search" element={<AnimeSearchPage />} />
+    <>
+      <div key={key} className="animate-page-in">
+        {page}
+      </div>
+      {showNav && (isDonghua ? <DonghuaNav /> : <BottomNav />)}
+    </>
+  );
+}
 
-          {/* Donghua Routes */}
-          <Route path="/s/donghua/" element={<DonghuaHomePage />} />
-          <Route path="/s/donghua/schedule" element={<DonghuaSchedulePage />} />
-          <Route path="/s/donghua/detail/:slug" element={<DonghuaDetailPage />} />
-          <Route path="/s/donghua/watch/:slug" element={<DonghuaWatchPage />} />
-          <Route path="/s/donghua/search" element={<DonghuaSearchPage />} />
-
-          {/* Comic Routes */}
-          <Route path="/s/comic/" element={<ComicHomePage />} />
-          <Route path="/s/comic/detail/:slug" element={<ComicDetailPage />} />
-          <Route path="/s/comic/genres" element={<ComicGenresPage />} />
-          <Route path="/s/comic/genre/:genre" element={<ComicByGenrePage />} />
-          <Route path="/s/comic/search" element={<ComicSearchPage />} />
-          <Route path="/s/comic/read/:chapterSlug" element={<ComicReadPage />} />
-
-          {/* Novel Routes */}
-          <Route path="/s/novel/" element={<NovelHomePage />} />
-          <Route path="/s/novel/detail/:slug" element={<NovelDetailPage />} />
-          <Route path="/s/novel/genres" element={<NovelGenresPage />} />
-          <Route path="/s/novel/search" element={<NovelSearchPage />} />
-          <Route path="/s/novel/baca/:chapterSlug" element={<NovelReadPage />} />
-
-          {/* Drachin Routes */}
-          <Route path="/s/drachin/" element={<DrachinHomePage />} />
-          <Route path="/s/drachin/detail/:collectionId" element={<DrachinDetailPage />} />
-          <Route path="/s/drachin/search" element={<DrachinSearchPage />} />
-          <Route path="/s/drachin/watch/:collectionId/:episode" element={<DrachinWatchPage />} />
-
-          {/* Other Routes */}
-          <Route path="/s/favorite/" element={<FavoritePage />} />
-          <Route path="/s/about/" element={<AboutPage />} />
-          <Route path="/s/updates/" element={<UpdatesPage />} />
-
-          {/* 404 */}
-          <Route path="*" element={
-            <div className="text-center py-20">
-              <h1 className="text-4xl font-bold mb-2">404</h1>
-              <p className="font-mono text-text-secondary">Halaman tidak ditemukan</p>
-            </div>
-          } />
-        </Routes>
-      </main>
+function BackgroundDecor() {
+  return (
+    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+      <div className="blob-bg w-[400px] h-[400px] -top-20 -right-20" style={{ background: 'var(--blob-a)' }} />
+      <div className="blob-bg w-[350px] h-[350px] top-1/2 -left-20" style={{ background: 'var(--blob-b)', animationDelay: '6s' }} />
+      <div className="blob-bg w-[300px] h-[300px] bottom-0 right-0" style={{ background: 'var(--blob-c)', animationDelay: '10s' }} />
     </div>
   );
 }
 
 export default function App() {
   return (
-    <HashRouter>
-      <Layout />
-    </HashRouter>
+    <AppProvider>
+      <RouterProvider>
+        <div className="min-h-screen relative">
+          <BackgroundDecor />
+          <DynamicIsland />
+          <FlyingFavorite />
+          <main className="max-w-md mx-auto relative">
+            <Routes />
+          </main>
+        </div>
+      </RouterProvider>
+    </AppProvider>
   );
 }
